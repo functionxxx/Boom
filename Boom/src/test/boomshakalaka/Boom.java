@@ -36,22 +36,33 @@ public class Boom {
 
     // 输出列号
     private void printColumnNum(){
-        for(int i=0; i<=columns; i++){
-            if(i==0) System.out.print("\n"+"\t");
-            else System.out.print(i+"\t");
+		System.out.print("\n"+"\t");
+        for(int i=1; i<=columns; i++){
+            System.out.print(i+"\t");
         }
         System.out.println();
     }
 
     // 输出
     public void printBoard(boolean showBooms){
+
+        // 清屏(仅Windows CMD环境下有效)
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+
         printColumnNum();
         for(int i=0; i<rows; i++){
             System.out.print("\n"+String.valueOf(i+1)+"\t");  // 输出行号
             for(int j=0; j<columns; j++){
-                if(gameBoard[i][j] == -1 && showBooms) System.out.print("@"+"\t"); // 显示炸弹
-                else if(gameBoard[i][j] == 1) System.out.print("*"+"\t");  // 已踩点
-                else System.out.print("●"+"\t");  // 未踩点
+                if(gameBoard[i][j] == -1 && showBooms) {
+                	System.out.print("@"+"\t"); // 显示炸弹
+                }
+                else if(gameBoard[i][j] == 1) {
+                	System.out.print("-"+"\t");  // 已踩点
+                }
+                else {
+                	System.out.print("●"+"\t");  // 未踩点
+                }
             }
             System.out.print(String.valueOf(i+1)+"\t\n");
         }
@@ -63,7 +74,7 @@ public class Boom {
         //中雷
         if(gameBoard[x-1][y-1] == -1){
             printBoard(true);
-            System.out.println("\n"+"你死了！");
+            System.out.println("\n"+"你死了！"+"\n");
             System.exit(0);
         }
         else{
