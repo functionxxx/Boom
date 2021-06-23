@@ -19,7 +19,7 @@ public class Main {
                 c = Integer.parseInt(params[1]);
 
                 System.out.print("请输入地雷个数(输入-1为随机):");
-                n = sc.nextInt();
+                n = Integer.parseInt(sc.next());
                 System.out.println();
 
                 break;
