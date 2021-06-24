@@ -5,8 +5,13 @@ import java.util.Random;
 public class Boom {
 
     private int[][] gameBoard;
-    private int treadCount;
     private final int rows, columns, voidCount;
+    private int treadCount;
+    private int statusFlag;
+
+    public int getStatusFlag() {
+        return statusFlag;
+    }
 
     // 构造方法
     Boom(int rows, int columns, int boomCount) {
@@ -35,7 +40,7 @@ public class Boom {
 
     // 输出列号
     private void printColumnNum() {
-		System.out.print("\t\t");
+        System.out.print("\t\t");
         for(int i=1; i<=columns; i++) {
             System.out.print(i+"\t");
         }
@@ -70,12 +75,12 @@ public class Boom {
     }
 
     // 踩点
-    public int tread(int x, int y) {
+    public void tread(int x, int y) {
         //中雷
         if(gameBoard[x-1][y-1] == -1) {
             printBoard(1);
             System.out.println("你死了！");
-            return -1;
+            statusFlag = -1;
 
         } else {
             gameBoard[x-1][y-1] = 1;
@@ -84,11 +89,11 @@ public class Boom {
             if(treadCount==voidCount) {
                 printBoard(1);
                 System.out.println("你赢了！");
-                return 1;
+                statusFlag = 1;
 
             } else {
                 printBoard(0);
-                return 0;
+                statusFlag = 0;
             }
         }
     }

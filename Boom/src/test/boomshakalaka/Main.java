@@ -33,13 +33,12 @@ public class Main {
 
         tanmou.printBoard(0);
 
-        int statusFlag = 0;
-        while(statusFlag == 0) {
+        while(tanmou.getStatusFlag() == 0) {
             System.out.print("请输入扫雷位置，以(行,列)表示:");
             String[] params = sc.next().split(",");
             System.out.println();
             try {
-                statusFlag = tanmou.tread(Integer.parseInt(params[0]), Integer.parseInt(params[1]));
+                tanmou.tread(Integer.parseInt(params[0]), Integer.parseInt(params[1]));
             } catch(Exception e) {
                 System.out.println("所输入位置无效，请重新输入！");
             }
