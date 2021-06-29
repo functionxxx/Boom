@@ -10,7 +10,7 @@ import java.util.List;
 @SuppressWarnings("serial")
 public class GameView extends JFrame implements ActionListener {
 
-    private final int rows, columns, bombCount, totalCount;
+    private final int rows, columns, bombCount;
     private int statusFlag;
     private final Boom tanmou;
     private final ImageIcon imgBomb = new ImageIcon("images/32x32.png");
@@ -26,7 +26,6 @@ public class GameView extends JFrame implements ActionListener {
         this.rows = rows;
         this.columns = columns;
         this.bombCount = bombCount;
-        this.totalCount = rows*columns;
 
         tanmou = new Boom(rows, columns, bombCount);
 
@@ -83,27 +82,24 @@ public class GameView extends JFrame implements ActionListener {
             new GameView(rows, columns, bombCount);
 
         } else if(statusFlag == 0) {
-            for(int i=0; i<totalCount; i++) {
-                if(e.getSource().equals(blocks.get(i))) {
-                    blocks.get(i).setEnabled(false);
-                    
-                    int x = i/columns, y = i<columns? i:i%columns;  // index到x,y坐标转换
-                    statusFlag = tanmou.tread(x, y);
+            int idx = blocks.indexOf(e.getSource());
+            blocks.get(idx).setEnabled(false);
 
-                    if(statusFlag==-1) {
-                        blocks.get(i).setIcon(imgBomb);
-                        blocks.get(i).setBackground(Color.RED);
-                        JOptionPane.showMessageDialog(this, " 你死了！ ");
-                        printBomb();
+            int x = idx/columns;
+            int y = idx<columns? idx:idx%columns;  // index到x,y坐标转换
+            statusFlag = tanmou.tread(x, y);
 
-                    } else if(statusFlag==1) {
-                        JOptionPane.showMessageDialog(this, " 你赢了！ ");
-                        printBomb();
+            if(statusFlag == -1) {
+                blocks.get(idx).setIcon(imgBomb);
+                blocks.get(idx).setBackground(Color.RED);
+                JOptionPane.showMessageDialog(this, " 你死了！ ");
+                printBomb();
 
-                    }
-                }
+            } else if(statusFlag == 1) {
+                JOptionPane.showMessageDialog(this, " 你赢了！ ");
+                printBomb();
+
             }
         }
-        // e.getSource().setEnabled(false); ??
     }
 }

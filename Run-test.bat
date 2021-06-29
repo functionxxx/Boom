@@ -1,3 +1,2 @@
 @echo off
-java -jar Boom.jar
-pause
+start javaw -jar Boom.jar
