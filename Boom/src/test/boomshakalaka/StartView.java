@@ -8,8 +8,9 @@ import java.awt.event.*;
 public class StartView extends JFrame implements ActionListener {
 
     public static StartView myView;
-    public static Font myFont = new Font("微软雅黑",Font.BOLD,13);
+    public static Font myFont = new Font("微软雅黑", Font.BOLD, 13);
 
+    // 定义组件
     JLabel lbRows, lbColumns, lbBombCount, lbBlank;
     JTextField tfBombCount;
     JComboBox<Integer> listRows, listColumns;
@@ -163,7 +164,7 @@ public class StartView extends JFrame implements ActionListener {
             int rows = listRows.getSelectedIndex() + 4;
             int columns = listColumns.getSelectedIndex() + 4;
             int bombCount = ckbRandom.isSelected()? -1:Integer.parseInt(tfBombCount.getText());
-            if(bombCount==-1 || bombCount>0 && bombCount<=rows*columns*Boom.maxBombDensity) {    // 判断布雷数是否合法
+            if(bombCount==-1 || bombCount>0 && bombCount<=rows*columns*Boom.MAX_BOMB_DENSITY) {    // 判断布雷数是否合法
                 this.setVisible(false);
                 new GameView(rows, columns, bombCount);
 
@@ -175,9 +176,8 @@ public class StartView extends JFrame implements ActionListener {
 
     // 计算默认布雷数
     private String generateDefaultBombCount() {
-        double defBombDensity = 0.35;       // 指定默认布雷密度
-        double density = (listRows.getSelectedIndex()+4)*(listColumns.getSelectedIndex()+4)*defBombDensity;
-        return String.valueOf((int)density);
+        double bCount = (listRows.getSelectedIndex()+4)*(listColumns.getSelectedIndex()+4)*Boom.DEF_BOMB_DENSITY;
+        return String.valueOf((int)bCount);
     }
 
     public static void main(String[] args) {

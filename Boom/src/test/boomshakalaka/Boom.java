@@ -4,7 +4,8 @@ import java.util.Random;
 
 public class Boom {
 
-    public static double maxBombDensity = 0.70;     //  指定最大布雷密度
+    public static final double MAX_BOMB_DENSITY = 0.70;     //  指定最大布雷密度
+    public static final double DEF_BOMB_DENSITY = 0.35;     // 指定默认布雷密度
 
     private final int[][] gameBoard;
     private final int voidCount;
@@ -16,7 +17,7 @@ public class Boom {
         Random rd = new Random();
 
         // 随机雷数
-        if(bombCount==-1) while (bombCount<=0) bombCount = rd.nextInt((int)(rows*columns*maxBombDensity));
+        if(bombCount==-1) while (bombCount<=0) bombCount = rd.nextInt((int)(rows*columns* MAX_BOMB_DENSITY));
         this.voidCount = rows * columns - bombCount;
 
         // 指定雷数

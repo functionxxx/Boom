@@ -6,7 +6,7 @@ import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@SuppressWarnings("serial")
+@SuppressWarnings({"serial"})
 public class GameView extends JFrame implements ActionListener {
 
     private final int rows, columns, bombCount;
