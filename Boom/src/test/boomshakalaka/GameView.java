@@ -2,8 +2,7 @@ package test.boomshakalaka;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,13 +10,13 @@ import java.util.List;
 public class GameView extends JFrame implements ActionListener {
 
     private final int rows, columns, bombCount;
+    private final Boom bombLayout;
+    private final ImageIcon iconBomb = new ImageIcon(this.getClass().getResource("icon-32x32.png"));
     private int statusFlag;
-    private final Boom tanmou;
-    private final ImageIcon imgBomb = new ImageIcon("images/32x32.png");
 
     // 定义组件
-    JPanel bombArea, buttonArea;
-    JButton jbAgain, jbClose;
+    JPanel bombArea, buttonArea, leftSpareArea, rightSpareArea, topSpareArea;
+    JButton btnAgain, btnBack;
     List<JButton> blocks = new ArrayList<>();
 
     // 构造方法
@@ -27,8 +26,17 @@ public class GameView extends JFrame implements ActionListener {
         this.columns = columns;
         this.bombCount = bombCount;
 
-        tanmou = new Boom(rows, columns, bombCount);
+        // 直接叉掉窗口时的默认操作
+        this.addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                GameView.super.dispose();
+                StartView.myView.setVisible(true);
+            }
+        });
 
+        bombLayout = new Boom(rows, columns, bombCount);
+
+        // ########################## 地雷区 #############################
         bombArea = new JPanel();
         bombArea.setLayout(new GridLayout(rows, columns, 0, 0));
 
@@ -37,46 +45,70 @@ public class GameView extends JFrame implements ActionListener {
             blocks.get(i).addActionListener(this);
             bombArea.add(blocks.get(i));
         }
-
-        buttonArea = new JPanel();
-        buttonArea.setLayout(new FlowLayout(FlowLayout.CENTER,20,5));
-
-        jbAgain = new JButton("重来");
-        jbAgain.addActionListener(this);
-        buttonArea.add(jbAgain);
-
-        jbClose = new JButton("关闭");
-        jbClose.addActionListener(this);
-        buttonArea.add(jbClose);
-
         this.add(bombArea);
-        this.add(buttonArea,"South");
+        // ########################## 地雷区 #############################
 
-        this.setSize(columns*36, rows*40+40);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setLocationRelativeTo(null); // 居中显示
+
+        // ########################## 按钮区 #############################
+        buttonArea = new JPanel();
+        buttonArea.setLayout(new FlowLayout(FlowLayout.CENTER,20,10));
+
+        btnAgain = new JButton("重来");
+        btnAgain.setFont(StartView.myFont);
+        btnAgain.addActionListener(this);
+        buttonArea.add(btnAgain);
+
+        btnBack = new JButton("返回");
+        btnBack.setFont(StartView.myFont);
+        btnBack.addActionListener(this);
+        buttonArea.add(btnBack);
+
+        this.add(buttonArea,"South");
+        // ########################## 按钮区 #############################
+
+
+        // ######################## 左-右-顶留白区 ########################
+        leftSpareArea = new JPanel();
+        leftSpareArea.setPreferredSize(new Dimension(10,1));
+        this.add(leftSpareArea,"West");
+
+        rightSpareArea = new JPanel();
+        rightSpareArea.setPreferredSize(new Dimension(10,1));
+        this.add(rightSpareArea,"East");
+
+        topSpareArea = new JPanel();
+        topSpareArea.setPreferredSize(new Dimension(1,10));
+        this.add(topSpareArea,"North");
+        // ######################## 左-右-顶留白区 ########################
+
+
+        this.setSize(columns*36+20, rows*40+55);
+        this.setMinimumSize(new Dimension(200,260));
         this.setResizable(false);
+        this.setLocationRelativeTo(null); // 居中显示
+        this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);  // 交由WindowListener处理
         this.setVisible(true);
     }
 
-    private void printBomb() {
+    private void drawBomb() {
         for(int i=0; i<rows; i++) {
             for(int j=0; j<columns; j++) {
-                if(tanmou.isBomb(i, j)) {
+                if(bombLayout.isBomb(i, j)) {
                     int idx = i==0? j:i*columns+j;  // x,y坐标到index转换
-                    blocks.get(idx).setIcon(imgBomb);
+                    blocks.get(idx).setIcon(iconBomb);
                 }
             }
         }
     }
 
-    // 事件响应器
+    // 事件响应
     public void actionPerformed(ActionEvent e) {
-        if(e.getSource().equals(jbClose)) {
-            // 点击关闭
+        if(e.getSource().equals(btnBack)) {
+            // 点击返回
             this.dispose();
+            StartView.myView.setVisible(true);
 
-        } else if(e.getSource().equals(jbAgain)) {
+        } else if(e.getSource().equals(btnAgain)) {
             // 点击重来
             this.dispose();
             new GameView(rows, columns, bombCount);
@@ -87,17 +119,17 @@ public class GameView extends JFrame implements ActionListener {
 
             int x = idx/columns;
             int y = idx<columns? idx:idx%columns;  // index到x,y坐标转换
-            statusFlag = tanmou.tread(x, y);
+            statusFlag = bombLayout.tread(x, y);
 
             if(statusFlag == -1) {
-                blocks.get(idx).setIcon(imgBomb);
+                blocks.get(idx).setIcon(iconBomb);
                 blocks.get(idx).setBackground(Color.RED);
                 JOptionPane.showMessageDialog(this, " 你死了！ ");
-                printBomb();
+                drawBomb();
 
             } else if(statusFlag == 1) {
                 JOptionPane.showMessageDialog(this, " 你赢了！ ");
-                printBomb();
+                drawBomb();
 
             }
         }

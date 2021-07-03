@@ -4,7 +4,9 @@ import java.util.Random;
 
 public class Boom {
 
-    private int[][] gameBoard;
+    public static double maxBombDensity = 0.70;     //  指定最大布雷密度
+
+    private final int[][] gameBoard;
     private final int voidCount;
     private int treadCount;
 
@@ -14,20 +16,15 @@ public class Boom {
         Random rd = new Random();
 
         // 随机雷数
-        if(bombCount==-1) while (bombCount<=0) bombCount = rd.nextInt((int)(rows*columns*0.75));
+        if(bombCount==-1) while (bombCount<=0) bombCount = rd.nextInt((int)(rows*columns*maxBombDensity));
         this.voidCount = rows * columns - bombCount;
 
         // 指定雷数
-        if(bombCount>0 && bombCount<rows*columns*0.75) {
-            gameBoard = new int[rows][columns];
-            for(int i=0; i<bombCount; i++) {
-                int x = rd.nextInt(rows), y = rd.nextInt(columns);
-                if (gameBoard[x][y] == -1) i--;
-                else gameBoard[x][y] = -1;
-            }
-        } else {
-            System.out.println("布雷数超出合法范围");
-            System.exit(-1);
+        gameBoard = new int[rows][columns];
+        for(int i=0; i<bombCount; i++) {
+            int x = rd.nextInt(rows), y = rd.nextInt(columns);
+            if (gameBoard[x][y] == -1) i--;
+            else gameBoard[x][y] = -1;
         }
     }
 
