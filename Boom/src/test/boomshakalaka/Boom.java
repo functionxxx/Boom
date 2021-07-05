@@ -6,6 +6,7 @@ public class Boom {
 
     public static final double MAX_BOMB_DENSITY = 0.70;     //  指定最大布雷密度
     public static final double DEF_BOMB_DENSITY = 0.35;     // 指定默认布雷密度
+    public static final int STATUS_ALIVE = 0, STATUS_WON = 1, STATUS_DEAD = -1;
 
     private final int[][] gameBoard;
     private final int voidCount;
@@ -17,7 +18,7 @@ public class Boom {
         Random rd = new Random();
 
         // 随机雷数
-        if(bombCount==-1) while (bombCount<=0) bombCount = rd.nextInt((int)(rows*columns* MAX_BOMB_DENSITY));
+        if(bombCount==-1) while (bombCount<=0) bombCount = rd.nextInt((int)(rows*columns*MAX_BOMB_DENSITY));
         this.voidCount = rows * columns - bombCount;
 
         // 指定雷数
@@ -37,7 +38,7 @@ public class Boom {
     public int tread(int x, int y) {
         //中雷
         if(gameBoard[x][y] == -1) {
-            return -1;
+            return STATUS_DEAD;
 
         } else {
             gameBoard[x][y] = 1;
@@ -45,10 +46,10 @@ public class Boom {
 
             // 踩完所有无雷位置则赢
             if(treadCount==voidCount) {
-                return 1;
+                return STATUS_WON;
 
             } else {
-                return 0;
+                return STATUS_ALIVE;
             }
         }
     }

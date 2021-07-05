@@ -6,7 +6,7 @@ import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@SuppressWarnings({"serial"})
+@SuppressWarnings("serial")
 public class GameView extends JFrame implements ActionListener {
 
     private final int rows, columns, bombCount;
@@ -113,7 +113,7 @@ public class GameView extends JFrame implements ActionListener {
             this.dispose();
             new GameView(rows, columns, bombCount);
 
-        } else if(statusFlag == 0) {
+        } else if(statusFlag == Boom.STATUS_ALIVE) {
             int idx = blocks.indexOf(e.getSource());
             blocks.get(idx).setEnabled(false);
 
@@ -121,16 +121,15 @@ public class GameView extends JFrame implements ActionListener {
             int y = idx<columns? idx:idx%columns;  // index到x,y坐标转换
             statusFlag = bombLayout.tread(x, y);
 
-            if(statusFlag == -1) {
+            if(statusFlag == Boom.STATUS_DEAD) {
                 blocks.get(idx).setIcon(iconBomb);
                 blocks.get(idx).setBackground(Color.RED);
                 JOptionPane.showMessageDialog(this, " 你死了！ ");
                 drawBomb();
 
-            } else if(statusFlag == 1) {
+            } else if(statusFlag == Boom.STATUS_WON) {
                 JOptionPane.showMessageDialog(this, " 你赢了！ ");
                 drawBomb();
-
             }
         }
     }

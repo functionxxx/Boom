@@ -37,7 +37,6 @@ public class StartView extends JFrame implements ActionListener {
 
                 } else if(e.getStateChange()==ItemEvent.DESELECTED) {
                     listColumns.setEnabled(true);
-
                 }
             } else if(e.getSource().equals(ckbRandom)) {
                 // "随机"CheckBox更改
@@ -49,7 +48,6 @@ public class StartView extends JFrame implements ActionListener {
                     tfBombCount.setEnabled(true);
                     tfBombCount.setText(generateDefaultBombCount());
                 }
-
             }
         }
     };
@@ -154,10 +152,12 @@ public class StartView extends JFrame implements ActionListener {
         this.setVisible(true);
     }
 
+    // 事件响应
     public void actionPerformed(ActionEvent e) {
         if(e.getSource().equals(btnCancel)) {
             // 点击取消
             this.dispose();
+            System.exit(0);
 
         } else if(e.getSource().equals(btnStart)) {
             // 点击开始
