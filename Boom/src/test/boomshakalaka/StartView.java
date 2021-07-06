@@ -9,6 +9,7 @@ public class StartView extends JFrame implements ActionListener {
 
     public static StartView myView;
     public static Font myFont = new Font("微软雅黑", Font.BOLD, 13);
+    private final int MIN_LAYOUT_SIZE = 4, MAX_LAYOUT_SIZE = 16;    //  指定最小\最大行列数
 
     // 定义组件
     JLabel lbRows, lbColumns, lbBombCount, lbBlank;
@@ -85,12 +86,12 @@ public class StartView extends JFrame implements ActionListener {
         listColumns.setEnabled(false);
         inputArea.add(listColumns);
 
-        for(int i=4; i<=16; i++) {          // 生成候选列表，最小4x4，最大16x16
+        for(int i=MIN_LAYOUT_SIZE; i<=MAX_LAYOUT_SIZE; i++) {          // 根据行列数限制生成候选列表
             listRows.addItem(i);
             listColumns.addItem(i);
         }
-        listRows.setSelectedIndex(2);
-        listColumns.setSelectedIndex(2);     // 默认选择6x6布局
+        listRows.setSelectedIndex(6-MIN_LAYOUT_SIZE);
+        listColumns.setSelectedIndex(6-MIN_LAYOUT_SIZE);               // 默认选择6x6布局
 
         listRows.addItemListener(takeSomeAction);
         listColumns.addItemListener(takeSomeAction);
@@ -161,8 +162,8 @@ public class StartView extends JFrame implements ActionListener {
 
         } else if(e.getSource().equals(btnStart)) {
             // 点击开始
-            int rows = listRows.getSelectedIndex() + 4;
-            int columns = listColumns.getSelectedIndex() + 4;
+            int rows = listRows.getSelectedIndex() + MIN_LAYOUT_SIZE;
+            int columns = listColumns.getSelectedIndex() + MIN_LAYOUT_SIZE;
             int bombCount = ckbRandom.isSelected()? -1:Integer.parseInt(tfBombCount.getText());
             if(bombCount==-1 || bombCount>0 && bombCount<=rows*columns*Boom.MAX_BOMB_DENSITY) {    // 判断布雷数是否合法
                 this.setVisible(false);
@@ -176,7 +177,9 @@ public class StartView extends JFrame implements ActionListener {
 
     // 计算默认布雷数
     private String generateDefaultBombCount() {
-        double bCount = (listRows.getSelectedIndex()+4)*(listColumns.getSelectedIndex()+4)*Boom.DEF_BOMB_DENSITY;
+        double bCount = (listRows.getSelectedIndex() + MIN_LAYOUT_SIZE)
+                        *(listColumns.getSelectedIndex() + MIN_LAYOUT_SIZE)
+                        *Boom.DEF_BOMB_DENSITY;
         return String.valueOf((int)bCount);
     }
 

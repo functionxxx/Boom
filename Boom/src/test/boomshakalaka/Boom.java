@@ -5,7 +5,7 @@ import java.util.Random;
 public class Boom {
 
     public static final double MAX_BOMB_DENSITY = 0.70;     //  指定最大布雷密度
-    public static final double DEF_BOMB_DENSITY = 0.35;     // 指定默认布雷密度
+    public static final double DEF_BOMB_DENSITY = 0.35;     //  指定默认布雷密度
     public static final int STATUS_ALIVE = 0, STATUS_WON = 1, STATUS_DEAD = -1;
 
     private final int[][] gameBoard;
