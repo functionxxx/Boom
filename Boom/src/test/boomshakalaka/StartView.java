@@ -8,8 +8,8 @@ import java.awt.event.*;
 public class StartView extends JFrame implements ActionListener {
 
     public static StartView myView;
-    public static Font myFont = new Font("微软雅黑", Font.BOLD, 13);
-    private final int MIN_LAYOUT_SIZE = 4, MAX_LAYOUT_SIZE = 16;    //  指定最小\最大行列数
+    public static final Font myFont = new Font("微软雅黑", Font.BOLD, 13);
+    private final int MIN_LAYOUT_SIZE = 4, DEF_LAYOUT_SIZE = 6, MAX_LAYOUT_SIZE = 16;    //  指定最小\默认\最大行列数
 
     // 定义组件
     JLabel lbRows, lbColumns, lbBombCount, lbBlank;
@@ -86,12 +86,12 @@ public class StartView extends JFrame implements ActionListener {
         listColumns.setEnabled(false);
         inputArea.add(listColumns);
 
-        for(int i=MIN_LAYOUT_SIZE; i<=MAX_LAYOUT_SIZE; i++) {          // 根据行列数限制生成候选列表
+        for(int i=MIN_LAYOUT_SIZE; i<=MAX_LAYOUT_SIZE; i++) {            // 根据行列数限制生成候选列表
             listRows.addItem(i);
             listColumns.addItem(i);
         }
-        listRows.setSelectedIndex(6-MIN_LAYOUT_SIZE);
-        listColumns.setSelectedIndex(6-MIN_LAYOUT_SIZE);               // 默认选择6x6布局
+        listRows.setSelectedIndex(DEF_LAYOUT_SIZE - MIN_LAYOUT_SIZE);
+        listColumns.setSelectedIndex(DEF_LAYOUT_SIZE - MIN_LAYOUT_SIZE); // 选择默认布局
 
         listRows.addItemListener(takeSomeAction);
         listColumns.addItemListener(takeSomeAction);
