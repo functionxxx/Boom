@@ -30,7 +30,7 @@ public class GameView extends JFrame implements ActionListener {
         this.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
                 GameView.super.dispose();
-                StartView.myView.setVisible(true);
+                StartView.showMe();
             }
         });
 
@@ -106,7 +106,7 @@ public class GameView extends JFrame implements ActionListener {
         if(e.getSource().equals(btnBack)) {
             // 点击返回
             this.dispose();
-            StartView.myView.setVisible(true);
+            StartView.showMe();
 
         } else if(e.getSource().equals(btnAgain)) {
             // 点击重来

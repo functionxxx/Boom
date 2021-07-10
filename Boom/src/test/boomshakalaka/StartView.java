@@ -7,7 +7,7 @@ import java.awt.event.*;
 @SuppressWarnings("serial")
 public class StartView extends JFrame implements ActionListener {
 
-    public static StartView myView;
+    private static StartView myView;
     public static final Font myFont = new Font("微软雅黑", Font.BOLD, 13);
     private final int MIN_LAYOUT_SIZE = 4, DEF_LAYOUT_SIZE = 6, MAX_LAYOUT_SIZE = 16;    //  指定最小\默认\最大行列数
 
@@ -181,6 +181,10 @@ public class StartView extends JFrame implements ActionListener {
                         *(listColumns.getSelectedIndex() + MIN_LAYOUT_SIZE)
                         *Boom.DEF_BOMB_DENSITY;
         return String.valueOf((int)bCount);
+    }
+
+    public static void showMe() {
+        myView.setVisible(true);
     }
 
     public static void main(String[] args) {
